@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+    <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+
+    <style>
+    .bar {
+      fill: steelblue;
+    }
+    .bar:hover {
+      fill: brown;
+    }
+    .toolTip {
+      position: absolute;
+      display: none;
+      min-width: 80px;
+      height: auto;
+      background: none repeat scroll 0 0 #ffffff;
+      border: 1px solid #6F257F;
+      padding: 14px;
+      text-align: center;
+    }
+    h2 {
+      font-size : 120%;
+      color:#489450;
+    }
+    h3 {
+      font-size : 180%;
+      color:#696969;
+      text-align: center;
+    }
+    .xaxis text {
+      color:blue;
+    }
+    .yaxis text {
+      color:blue;
+    }
+    #svgcontainer {
+    display: inline-block;
+    }
+    #explcontainer {
+        display: inline-block;
+    }
+    </style>
+    
+    <h3>Global warming is a reality !</h3>
+    <div id="wrapper">
+
+      <div id = "svgcontainer">
+            <br/>
+            <h2>Dataset</h2>
+            <p style="color:#789410;font-size:110%">Data only for countries where more than 1000 Colombians have been registered</p>
+            <button style="padding: 10px 20px; text-align: center;font-size: 16px;margin: 4px 2px;">Switch dataset</button>
+      </div>
+
+       <div id = "explcontainer">
+            <h2>What, why and how ? Understanding this visualization thanks to abstraction</h2>
+            <p style="color:#789410;font-size:110%">What ?</p>
+            <p style="color:#111111;">
+              This visualization uses open data from data.gov.com. The aim is to show some interesting insights about this data : this is the principal objective. The other ones are more academic, like use d3 and publish the web page on githubPages. The technologies used are d3 (javascript), HTML, CSS and git (nodejs for developing with a local server). There is no specific prerequisites for enjoying the visualization neither for using the code available in github.
+              To be more precise about these insights, in the following paragraphs we will explain what were our data (through data abstraction), why this visualization (through task abstraction) and the reason of how we choice to present the data (idioms : visual encoding and interaction) ; thanks to that, we have been able to answer to the title question : Colombian migration : where do people go more ? And who are they ?
+              <br/><br/>
+              What ?
+              <br/><br/>
+              The dataset type is a <b>table</b>. The dataset availability is <b>static</b> because the dataset available on the website is not modified in real-time, so we just download the file from the website and create a new file of processed data (correcting absent values and modifying the columns spaces – English names and without spaces), then we load it. Then for separating the dataset in smaller ones, and also to get <b>derive data</b>, we process this file in the visualization with d3.<br/><br/>
+
+              <b>Why ?</b><br/><br/>
+
+              Which tasks do we want to perform here ? <br/><br/>
+
+              As said in the title, first
+
+              <b>How ?</b><br/><br/>
+
+              We choose for this visualization.<br/><br/>
+              </p>
+      </div>
+
+    </div>
+    <p style="font-size:90%">The data used come from the nasa open data website - direct link <a href="https://data.giss.nasa.gov/gistemp/tabledata_v3/ZonAnn.Ts+dSST.csv">here</a></p>
+    <p style="font-size:90%">This project is under <a href="https://opensource.org/licenses/MIT">MIT license.</a></p>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+
+    <script>
+      // Const margin data for viz
+      const width = 850;
+      const height = 500;
+      const margin = {top: 5, right: 70, bottom: 50, left: 50};
+      const iwidth = width - margin.left -margin.right;
+      const iheight = height - margin.top - margin.bottom;
+      // Const bar chart
+      const barwidth = 20;
+      // SVG and g elements
+      var svg = d3.select("#svgcontainer")
+          .append("svg")
+          .attr("width", iwidth + margin.left + margin.right)
+          .attr("height", iheight + margin.top + margin.bottom);
+      var g = svg.append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+      //Tooltip var
+      var tooltip = d3.select("body").append("div").attr("class", "toolTip");
+      //Dataset current index
+      var dataIndex=1;
+      //Create bar chart
+      function createBar(){
+      }
+      //Add the axis for bar chart
+      function addAxisForBarChar(){
+      }
+      //Add the rect (bar chart)
+      function addBarCharRects(){  
+      }
+      //Prepare datasets for bar chart
+      function prepareDatasets(){
+      }
+      //Update datasets for bar chart
+      function updateBar(){
+      }
+    </script>
+
+    <div class="wrapper">
+      <header>
+        <p><a href="">Link of this page - for sharing for example</a></p>
+      </header>
+      <section>
+        <p class="view"><a href="https://github.com/pierreraimbaud/ColombiansAbroadViz">Project URL on GitHub <small>pierreraimbaud/ColombiansAbroadViz</small></a>   -   <a style="font-size:90%" href="https://github.com/pierreraimbaud/ColombiansAbroadViz#markdown">Markdown link</a></p>        
+      </section>
+      <footer>
+        <p>Author and link : this project is maintained by <a href="https://github.com/pierreraimbaud">pierreraimbaud</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src=""></script>
+    
+  </body>
+</html>
