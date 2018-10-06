@@ -194,7 +194,7 @@
       //Create bar chart
       function createBar(){
         //Set dataset title
-        d3.select("h2").text("Temperature change from 1880 to now - Earth zone: " + datasetsTitles[dataIndex-1]);
+        d3.select("h2").text("Temperature change in °C from 1880 to now - Earth zone: " + datasetsTitles[dataIndex-1]);
         //Set sub title
         d3.select("#subTitleP").text("Promedian temperature change (reference: promedian of the years 1950-1980) for each group of "+ rangeOfYear+" years");
         
@@ -315,7 +315,7 @@
                 .style("left", d3.event.pageX - 70 + "px")
                 .style("top", d3.event.pageY - 90 + "px")
                 .style("display", "inline-block")
-                .html("In "+d.key*5 + ": " +(d.value.promedian)+ "°C");
+                .html(d.key == (2015/rangeOfYear) ? (d.key*rangeOfYear+"-2018"+": " +(d.value.promedian)+ "°C") : (d.key*rangeOfYear+"-"+(d.key*rangeOfYear+rangeOfYear))+": " +(d.value.promedian)+ "°C");
             })
             .on("mouseout", function(d){ tooltip.style("display", "none");});  
       }
@@ -667,7 +667,7 @@
             .attr("height", 0);//create any new rects needed
 
           //Change text  
-          d3.select("h2").text("Temperature change from 1880 to now - Earth zone: " + datasetsTitles[dataIndex-1]);
+          d3.select("h2").text("Temperature change in °C from 1880 to now - Earth zone: " + datasetsTitles[dataIndex-1]);
       }
 
       //Update the bar chart in multi bar chart based on the dataset change (zoom)
@@ -813,7 +813,7 @@
                   .style("left", d3.event.pageX - 70 + "px")
                   .style("top", d3.event.pageY - 90 + "px")
                   .style("display", "inline-block")
-                  .html(getDTitle(worldBand, 0)+ " zone, in " +d.key*5 + ": " +(d.value.promedian)+ "°C");
+                  .html(d.key == (2015/rangeOfYear) ? (getDTitle(worldBand, 0)+ " zone, in "+d.key*rangeOfYear+"-2018"+": " +(d.value.promedian)+ "°C") : (getDTitle(worldBand, 0)+ " zone, in "+ d.key*rangeOfYear+"-"+(d.key*rangeOfYear+rangeOfYear))+": " +(d.value.promedian)+ "°C");
               })
               .on("mouseout", function(d){ tooltip.style("display", "none");});
 
@@ -867,7 +867,7 @@
                   .style("left", d3.event.pageX - 70 + "px")
                   .style("top", d3.event.pageY - 90 + "px")
                   .style("display", "inline-block")
-                  .html(getDTitle(worldBand, 1)+ " zone, in " +d.key*5 + ": " +(d.value.promedian)+ "°C");
+                  .html(d.key == (2015/rangeOfYear) ? (getDTitle(worldBand, 0)+ " zone, in "+d.key*rangeOfYear+"-2018"+": " +(d.value.promedian)+ "°C") : (getDTitle(worldBand, 0)+ " zone, in "+ d.key*rangeOfYear+"-"+(d.key*rangeOfYear+rangeOfYear))+": " +(d.value.promedian)+ "°C");
               })
               .on("mouseout", function(d){ tooltip.style("display", "none");});
 
@@ -923,7 +923,7 @@
                       .style("left", d3.event.pageX - 70 + "px")
                       .style("top", d3.event.pageY - 90 + "px")
                       .style("display", "inline-block")
-                      .html(getDTitle(worldBand, 2)+ " zone, in "+ d.key*5 + ": " +(d.value.promedian)+ "°C");
+                      .html(d.key == (2015/rangeOfYear) ? (getDTitle(worldBand, 0)+ " zone, in "+d.key*rangeOfYear+"-2018"+": " +(d.value.promedian)+ "°C") : (getDTitle(worldBand, 0)+ " zone, in "+ d.key*rangeOfYear+"-"+(d.key*rangeOfYear+rangeOfYear))+": " +(d.value.promedian)+ "°C");
                   })
                   .on("mouseout", function(d){ tooltip.style("display", "none");});
               }
