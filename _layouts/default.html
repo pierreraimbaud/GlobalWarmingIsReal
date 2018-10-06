@@ -96,8 +96,8 @@
             <br/>
             <h2>Dataset</h2>
             <p id = "subTitleP" style="color:#789410;font-size:110%">Promedian temperature change (reference: promedian of the years 1950-1980) for each group of 5 years</p>
-            <button id = "swButton" style="padding: 10px 20px; text-align: center;font-size: 16px;margin: 4px 2px;">Switch dataset</button>
-            <button id = "zoomButton" style="padding: 10px 20px; text-align: center;font-size: 16px;margin: 4px 2px;">Zoom in this dataset</button>
+            <button id = "swButton" style="padding: 10px 10px; text-align: center;font-size: 90%;margin: 4px 2px;">Switch dataset</button>
+            <button id = "zoomButton" style="padding: 10px 10px; text-align: center;font-size: 90%;margin: 4px 2px;">Show dataset details</button>
       </div>
 
        <div id = "explcontainer">
@@ -194,7 +194,7 @@
       //Create bar chart
       function createBar(){
         //Set dataset title
-        d3.select("h2").text("Dataset "+dataIndex +" about temperature change - " + datasetsTitles[dataIndex-1]);
+        d3.select("h2").text("Temperature change from 1880 to now - Earth zone: " + datasetsTitles[dataIndex-1]);
         //Set sub title
         d3.select("#subTitleP").text("Promedian temperature change (reference: promedian of the years 1950-1980) for each group of "+ rangeOfYear+" years");
         
@@ -664,7 +664,7 @@
             .attr("height", 0);//create any new rects needed
 
           //Change text  
-          d3.select("h2").text("Dataset "+dataIndex +" about temperature change - " + datasetsTitles[dataIndex-1]);
+          d3.select("h2").text("Temperature change from 1880 to now - Earth zone: " + datasetsTitles[dataIndex-1]);
       }
 
       //Update the bar chart in multi bar chart based on the dataset change (zoom)
