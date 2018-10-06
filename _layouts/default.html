@@ -12,11 +12,46 @@
   <body>
 
     <style>
-    .bar {
-      fill: steelblue;
-    }
+/*    .bar {
+      fill: green;
+    }*/
+    .bar--positive {
+  fill: #C48189;
+}
+
+.bar--negative {
+  fill: #CFECEC;
+}
+
+    .bar1--positive {
+  fill: #7F4E52;
+}
+
+.bar1--negative {
+    fill: #3B9C9C;
+
+}
+
+ .barbar--positive {
+  fill: #C5908E;
+}
+
+.barbar--negative {
+  fill: #46C7C7;
+}
+
+ .barbarbar--positive {
+    fill: #E8ADAA;
+
+}
+
+.barbarbar--negative {
+    fill: #79BAEC;
+
+}
+
     .bar:hover {
-      fill: brown;
+      fill: #347C17;
     }
     .toolTip {
       position: absolute;
@@ -58,7 +93,8 @@
             <br/>
             <h2>Dataset</h2>
             <p style="color:#789410;font-size:110%">Data only for countries where more than 1000 Colombians have been registered</p>
-            <button style="padding: 10px 20px; text-align: center;font-size: 16px;margin: 4px 2px;">Switch dataset</button>
+            <button id = "swButton" style="padding: 10px 20px; text-align: center;font-size: 16px;margin: 4px 2px;">Switch dataset</button>
+            <button id = "zoomButton" style="padding: 10px 20px; text-align: center;font-size: 16px;margin: 4px 2px;">Zoom in this dataset</button>
       </div>
 
        <div id = "explcontainer">
@@ -115,8 +151,11 @@
       //Dataset current index
       var dataIndex=1;
 
-      var datasetsTitles = ["Global", "24N-90N","24S-24N"," 90S-24S"," 64N-90N ","44N-64N"," 24N-44N ",
-      "EQU-24N ","24S-EQU"," 44S-24S ","64S-44S ","90S-64S"];
+      var datasetsTitles = ["Global", "24N-90N","24S-24N","90S-24S"];
+
+      var datasetsNTitles = ["64N-90N ","44N-64N"," 24N-44N"];
+      var datasetsEQTitles = ["EQU-24N ","24S-EQU"];
+      var datasetsSTitles = ["44S-24S ","64S-44S ","90S-64S"];
 
       var maxIndex = datasetsTitles.length;
 
@@ -124,7 +163,10 @@
       var dataOrigin;
 
       // Dataset 1,2,3,4,5,6,7,8,9,10
-      var dataYearList1,dataYearList2;
+      var dataYearList1,dataYearList2,dataYearList3,dataYearList4;
+      var dataYearListDetailN1,dataYearListDetailN2,dataYearListDetailN3;
+      var dataYearListDetailEQ1,dataYearListDetailEQ2;
+      var dataYearListDetailS1,dataYearListDetailS2,dataYearListDetailS3;
 
       //Var for axis x and y
       var xDomain, yDomain, xaxis, yaxis, x, y;
@@ -139,10 +181,26 @@
       });
 
       //button to swap over datasets
-      d3.select("button").on("click",function(){
+      d3.select("#swButton").on("click",function(){
           updateBar();
       });//end click function
 
+      //button to swap over datasets
+      d3.select("#zoomButton").on("click",function(){
+          updateBarMulti();
+      });//end click function
+
+
+function getDTitle(txt, index) {
+  if (txt=="N") {
+    return datasetsNTitles[index];
+  } if (txt=="EQ") {
+    return datasetsEQTitles[index];
+  }
+  if (txt=="S") {
+    return datasetsSTitles[index];
+  }
+}
       //Create bar chart
       function createBar(){
         //Set dataset title
@@ -192,13 +250,37 @@
 
       //Add the rect (bar chart)
       function addBarCharRects(){
+        var dat = eval("dataYearList"+dataIndex);
+
+        // //Add rect
+        var rect = g.selectAll(".bar1")
+                  .data(dat)
+          .enter().append("rect")
+          .attr("class", "bar1")
+                        .attr("class", function(d) { return "bar1 bar1--" + (d.value.promedian < 0 ? "negative" : "positive"); });
+
+                  // //Add rect
+        var rect = g.selectAll(".barbar")
+                  .data(dat)
+          .enter().append("rect")
+          .attr("class", "barbar")
+                        .attr("class", function(d) { return "barbar barbar--" + (d.value.promedian < 0 ? "negative" : "positive"); });
+
+                  // //Add rect
+        var rect = g.selectAll(".barbarbar")
+                  .data(dat)
+          .enter().append("rect")
+          .attr("class", "barbarbar")
+                        .attr("class", function(d) { return "barbarbar barbarbar--" + (d.value.promedian < 0 ? "negative" : "positive"); });
+
 
         // //Add rect
         var rect = g.selectAll(".bar")
-          .data(eval("dataYearList"+dataIndex))
+          .data(dat)
           .enter().append("rect")
-          .attr("class", "bar");
-
+          .attr("class", "bar")
+          .attr("class", function(d) { return "bar bar--" + (d.value.promedian < 0 ? "negative" : "positive"); });
+         // .style("fill", "338752");
         //Add rect attributes
         var attrX = rect.attr("x", function (d) {
               return x(d.key*rangeOfYear);
@@ -321,7 +403,7 @@
             }
           })
           .entries(dataOrigin);
-          dataYearList5 = dataYear5;
+          dataYearListDetailN1 = dataYear5;
 
         //Nest data for getting it as (key=year range, value.promedian=promedian of t of the years)
         var dataYear6 = d3.nest()
@@ -336,7 +418,7 @@
             }
           })
           .entries(dataOrigin);
-          dataYearList6 = dataYear6;
+          dataYearListDetailN2 = dataYear6;
 
         //Nest data for getting it as (key=year range, value.promedian=promedian of t of the years)
         var dataYear7 = d3.nest()
@@ -351,7 +433,7 @@
             }
           })
           .entries(dataOrigin);
-          dataYearList7 = dataYear7;
+          dataYearListDetailN3 = dataYear7;
 
         //Nest data for getting it as (key=year range, value.promedian=promedian of t of the years)
         var dataYear8 = d3.nest()
@@ -366,7 +448,7 @@
             }
           })
           .entries(dataOrigin);
-          dataYearList8 = dataYear8;
+          dataYearListDetailEQ1 = dataYear8;
 
         //Nest data for getting it as (key=year range, value.promedian=promedian of t of the years)
         var dataYear9 = d3.nest()
@@ -381,7 +463,7 @@
             }
           })
           .entries(dataOrigin);
-          dataYearList9 = dataYear9;
+          dataYearListDetailEQ2 = dataYear9;
 
         //Nest data for getting it as (key=year range, value.promedian=promedian of t of the years)
         var dataYear10 = d3.nest()
@@ -396,7 +478,7 @@
             }
           })
           .entries(dataOrigin);
-          dataYearList10 = dataYear10;
+          dataYearListDetailS1 = dataYear10;
 
         //Nest data for getting it as (key=year range, value.promedian=promedian of t of the years)
         var dataYear11 = d3.nest()
@@ -411,7 +493,7 @@
             }
           })
           .entries(dataOrigin);
-          dataYearList11 = dataYear11;
+          dataYearListDetailS2 = dataYear11;
 
         //Nest data for getting it as (key=year range, value.promedian=promedian of t of the years)
         var dataYear12 = d3.nest()
@@ -426,7 +508,7 @@
             }
           })
           .entries(dataOrigin);
-          dataYearList12 = dataYear12;
+          dataYearListDetailS3 = dataYear12;
       }
 
       //Update datasets for bar chart
@@ -536,10 +618,358 @@
                 val=moins;
               }
               return val;
-            });//create any new rects needed
+            })
+            //.style("fill", "876569");//create any new rects needed
+
+
+
+         
+var barbar = g.selectAll(".bar1");
+          
+          //2 - Remove bar (rect)
+          barbar.exit().remove();//remove unneeded rects
+            //3 - Update bar (rect)
+          barbar.enter().append("rect")
+            .attr("class", "bar1");
+
+          barbar.attr("x", 0)
+
+          barbar.attr("y",0);
+
+          barbar.attr("width", 0)
+            .attr("height", 0);//create any new rects needed
+
+          var barbar = g.selectAll(".barbar");
+          
+          //2 - Remove bar (rect)
+          barbar.exit().remove();//remove unneeded rects
+
+          //3 - Update bar (rect)
+          barbar.enter().append("rect")
+            .attr("class", "barbar");
+
+          barbar.attr("x", 0)
+
+          barbar.attr("y",0);
+
+          barbar.attr("width", 0)
+            .attr("height", 0);//create any new rects needed
+
+
+           var barbarbar = g.selectAll(".barbarbar");
+          
+          //2 - Remove bar (rect)
+          barbarbar.exit().remove();//remove unneeded rects
+
+          //3 - Update bar (rect)
+          barbarbar.enter().append("rect")
+            .attr("class", "barbarbar");
+
+          barbarbar.attr("x", 0)
+
+          barbarbar.attr("y",0);
+
+          barbarbar.attr("width", 0)
+            .attr("height", 0);//create any new rects needed
+
 
           //Change text  
           d3.select("h2").text("Dataset "+dataIndex + ": by year - " + datasetsTitles[dataIndex-1]);
+      }
+
+      function updateBarMulti(){
+          console.log("salut");
+
+          //Update bar part(rect)
+
+          if (dataIndex!=1){
+   var worldBand;
+            if (dataIndex==2){
+              worldBand = "N";
+            }
+            if (dataIndex==3){
+              worldBand = "EQ";
+            }
+            if (dataIndex==4){
+              worldBand = "S";
+            }
+
+//Update y axis
+
+         
+      
+
+            var yaxis = g.selectAll(".yaxis");
+          
+
+           yaxis.enter().append("yaxis")
+            .attr("class", "yaxis");
+
+        
+
+          // Y scale
+          y = d3.scaleLinear().rangeRound([iheight, 0]);
+          var min = d3.min(eval("dataYearListDetail"+worldBand+"1"), function(d){
+            return +d.value.promedian});
+          var max = d3.max(eval("dataYearListDetail"+worldBand+"1"), function(d){
+            return +d.value.promedian});
+          var m2 =d3.min(eval("dataYearListDetail"+worldBand+"2"), function(d){
+            return +d.value.promedian});
+          if (min>m2){
+            min=m2;
+          }
+          var mn2 =d3.max(eval("dataYearListDetail"+worldBand+"2"), function(d){
+            return +d.value.promedian});
+          if (max<mn2){
+            max=mn2;
+          }
+          if (worldBand !="EQ"){
+            var m3 = d3.min(eval("dataYearListDetail"+worldBand+"3"), function(d){
+              return +d.value.promedian});
+            
+            if (min>m3){
+              min=m3;
+            }
+            var mn3 =d3.max(eval("dataYearListDetail"+worldBand+"3"), function(d){
+              return +d.value.promedian});
+            if (max<mn3){
+              max=mn3;
+            }
+          }
+          var dom = Math.max(Math.abs(min),max);
+          yDomain = [-dom,dom]
+          y.domain(yDomain);
+
+    
+          // Axis y  
+          yaxis =g.selectAll(".yaxis").data(yDomain);
+          yaxis.exit().remove();//remove unneeded rects
+          yaxis.enter().append("g");
+
+          yaxis.attr('class', 'yaxis').call(d3.axisLeft(y));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        var rectss = g.selectAll(".bar");
+            
+            //2 - Remove bar (rect)
+            rectss.exit().remove();//remove unneeded rects
+//3 - Update bar (rect)
+          rectss.enter().append("rect")
+            .attr("class", "bar");
+
+          rectss.attr("x", 0)
+
+          rectss.attr("y",0);
+
+          rectss.attr("width", 0)
+            .attr("height", 0);//create any new rects needed
+
+         
+            //1 - rejoin data
+            var rectss = g.selectAll(".bar1");
+            
+            //2 - Remove bar (rect)
+            rectss.exit().remove();//remove unneeded rects
+           
+            //3 - Update bar (rect)
+            rectss.data(eval("dataYearListDetail"+worldBand+"1")).enter().append("rect")
+              .attr("class", "bar1");
+
+
+            rectss.attr("x", function (d) {            
+                return x(d.key*rangeOfYear);
+              })
+
+            rectss.attr("y", function (d) {
+                var fix =height -(margin.top+margin.bottom);
+                var plus = fix/2 - (fix - y(+d.value.promedian)*2)/2;
+                var moins= fix/2;
+                var val;
+                if (+d.value.promedian>=0){
+                  val = plus;
+                }
+                else{
+                  val=moins;
+                }
+                return val;
+              });
+
+            rectss.attr("width", barwidth)
+              .attr("height", function (d) {
+                var fix =height -(margin.top+margin.bottom);
+                var plus = (fix - y(+d.value.promedian)*2)/2;
+                var moins= (fix - y(-(+d.value.promedian))*2)/2;
+                var val;
+                if (+d.value.promedian>=0){
+                  val = plus;
+                }
+                else{
+                  val=moins;
+                }
+                return val;
+              })
+
+              //.style("fill", "675678");//create any new rects needed
+
+//Add rect mouse event
+        rectss.on("mousemove", function(d){
+              tooltip
+                .style("left", d3.event.pageX - 70 + "px")
+                .style("top", d3.event.pageY - 90 + "px")
+                .style("display", "inline-block")
+                .html(getDTitle(worldBand, 0)+ "=> " +d.key*5 + ": " +(d.value.promedian));
+            })
+            .on("mouseout", function(d){ tooltip.style("display", "none");});
+
+              //1 - rejoin data
+          var rectss = g.selectAll(".barbar");
+            
+            //2 - Remove bar (rect)
+            rectss.exit().remove();//remove unneeded rects
+           
+            //3 - Update bar (rect)
+            rectss.data(eval("dataYearListDetail"+worldBand+"2")).enter().append("rect")
+              .attr("class", "barbar");
+
+            rectss.attr("x", function (d) {            
+                return x(d.key*rangeOfYear)+barwidth/8;
+              })
+
+            rectss.attr("y", function (d) {
+                var fix =height -(margin.top+margin.bottom);
+                var plus = fix/2 - (fix - y(+d.value.promedian)*2)/2;
+                var moins= fix/2;
+                var val;
+                if (+d.value.promedian>=0){
+                  val = plus;
+                }
+                else{
+                  val=moins;
+                }
+                return val;
+              });
+
+            rectss.attr("width", barwidth/1.3)
+              .attr("height", function (d) {
+                var fix =height -(margin.top+margin.bottom);
+                var plus = (fix - y(+d.value.promedian)*2)/2;
+                var moins= (fix - y(-(+d.value.promedian))*2)/2;
+                var val;
+                if (+d.value.promedian>=0){
+                  val = plus;
+                }
+                else{
+                  val=moins;
+                }
+                return val;
+              })
+              //.style("fill", "#32CD32");//create any new rects needed
+
+             //Add rect mouse event
+        rectss.on("mousemove", function(d){
+              tooltip
+                .style("left", d3.event.pageX - 70 + "px")
+                .style("top", d3.event.pageY - 90 + "px")
+                .style("display", "inline-block")
+                .html(getDTitle(worldBand, 1)+ "=> " +d.key*5 + ": " +(d.value.promedian));
+            })
+            .on("mouseout", function(d){ tooltip.style("display", "none");});
+
+
+
+
+
+
+
+
+
+
+            var rectss = g.selectAll(".barbarbar");
+            
+            //2 - Remove bar (rect)
+            rectss.exit().remove();//remove unneeded rects
+
+            if (worldBand !="EQ"){
+                //1 - rejoin data
+
+           
+            //3 - Update bar (rect)
+            rectss.data(eval("dataYearListDetail"+worldBand+"3")).enter().append("rect")
+              .attr("class", "barbarbar");
+
+              rectss.attr("x", function (d) {            
+                  return x(d.key*rangeOfYear)+barwidth/4;
+                })
+
+              rectss.attr("y", function (d) {
+                  var fix =height -(margin.top+margin.bottom);
+                  var plus = fix/2 - (fix - y(+d.value.promedian)*2)/2;
+                  var moins= fix/2;
+                  var val;
+                  if (+d.value.promedian>=0){
+                    val = plus;
+                  }
+                  else{
+                    val=moins;
+                  }
+                  return val;
+                });
+
+              rectss.attr("width", barwidth/2)
+                .attr("height", function (d) {
+                  var fix =height -(margin.top+margin.bottom);
+                  var plus = (fix - y(+d.value.promedian)*2)/2;
+                  var moins= (fix - y(-(+d.value.promedian))*2)/2;
+                  var val;
+                  if (+d.value.promedian>=0){
+                    val = plus;
+                  }
+                  else{
+                    val=moins;
+                  }
+                  return val;
+                })
+                //.style("fill", "#00FF7F");//create any new rects needed
+
+//Add rect mouse event
+        rectss.on("mousemove", function(d){
+              tooltip
+                .style("left", d3.event.pageX - 70 + "px")
+                .style("top", d3.event.pageY - 90 + "px")
+                .style("display", "inline-block")
+                .html(getDTitle(worldBand, 2)+ "=> "+ d.key*5 + ": " +(d.value.promedian));
+            })
+            .on("mouseout", function(d){ tooltip.style("display", "none");});
+
+
+
+
+
+
+
+
+
+
+
+
+              }
+          }
+          
       }
     </script>
 
