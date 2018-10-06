@@ -97,7 +97,7 @@
             <h2>Dataset</h2>
             <p id = "subTitleP" style="color:#789410;font-size:110%">Promedian temperature change (reference: promedian of the years 1950-1980) for each group of 5 years</p>
             <button id = "swButton" style="padding: 10px 10px; text-align: center;font-size: 90%;margin: 4px 2px;">Switch dataset</button>
-            <button id = "zoomButton" style="padding: 10px 10px; text-align: center;font-size: 90%;margin: 4px 2px;">Show dataset details</button>
+            <button disabled id = "zoomButton" style="padding: 10px 10px; text-align: center;font-size: 90%;margin: 4px 2px;">Show dataset details</button>
       </div>
 
        <div id = "explcontainer">
@@ -156,7 +156,7 @@
 
       var datasetsTitles = ["Global", "24N-90N","24S-24N","90S-24S"];
 
-      var datasetsNTitles = ["64N-90N ","44N-64N"," 24N-44N"];
+      var datasetsNTitles = ["64N-90N ","44N-64N","24N-44N"];
       var datasetsEQTitles = ["EQU-24N ","24S-EQU"];
       var datasetsSTitles = ["44S-24S ","64S-44S ","90S-64S"];
 
@@ -521,9 +521,12 @@
 
         //select new data
         if (dataIndex==maxIndex){
-          dataIndex=1;  
+          d3.select("#zoomButton").attr("disabled", true)
+          dataIndex=1;
+          
         }
         else{
+          d3.select("#zoomButton").attr("disabled", null)
           dataIndex++;
         }
 
@@ -685,6 +688,7 @@
         
         //Update bar part(rect)
         if (dataIndex!=1){
+          d3.select("#zoomButton").attr("disabled", true)
           var worldBand;
           if (dataIndex==2){
             worldBand = "N";
@@ -809,7 +813,7 @@
                   .style("left", d3.event.pageX - 70 + "px")
                   .style("top", d3.event.pageY - 90 + "px")
                   .style("display", "inline-block")
-                  .html(getDTitle(worldBand, 0)+ "zone, in " +d.key*5 + ": " +(d.value.promedian)+ "°C");
+                  .html(getDTitle(worldBand, 0)+ " zone, in " +d.key*5 + ": " +(d.value.promedian)+ "°C");
               })
               .on("mouseout", function(d){ tooltip.style("display", "none");});
 
@@ -863,7 +867,7 @@
                   .style("left", d3.event.pageX - 70 + "px")
                   .style("top", d3.event.pageY - 90 + "px")
                   .style("display", "inline-block")
-                  .html(getDTitle(worldBand, 1)+ "zone, in " +d.key*5 + ": " +(d.value.promedian)+ "°C");
+                  .html(getDTitle(worldBand, 1)+ " zone, in " +d.key*5 + ": " +(d.value.promedian)+ "°C");
               })
               .on("mouseout", function(d){ tooltip.style("display", "none");});
 
@@ -919,7 +923,7 @@
                       .style("left", d3.event.pageX - 70 + "px")
                       .style("top", d3.event.pageY - 90 + "px")
                       .style("display", "inline-block")
-                      .html(getDTitle(worldBand, 2)+ "zone, in "+ d.key*5 + ": " +(d.value.promedian)+ "°C");
+                      .html(getDTitle(worldBand, 2)+ " zone, in "+ d.key*5 + ": " +(d.value.promedian)+ "°C");
                   })
                   .on("mouseout", function(d){ tooltip.style("display", "none");});
               }
