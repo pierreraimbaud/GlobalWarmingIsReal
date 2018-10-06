@@ -97,7 +97,11 @@
       const iwidth = width - margin.left -margin.right;
       const iheight = height - margin.top - margin.bottom;
       // Const bar chart
-      const barwidth = 20;
+      const barwidth = 24;
+
+      // Const range of year grouped by
+      const rangeOfYear = 5;
+
       // SVG and g elements
       var svg = d3.select("#svgcontainer")
           .append("svg")
@@ -107,22 +111,435 @@
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
       //Tooltip var
       var tooltip = d3.select("body").append("div").attr("class", "toolTip");
+
       //Dataset current index
       var dataIndex=1;
+
+      var datasetsTitles = ["Global", "24N-90N","24S-24N"," 90S-24S"," 64N-90N ","44N-64N"," 24N-44N ",
+      "EQU-24N ","24S-EQU"," 44S-24S ","64S-44S ","90S-64S"];
+
+      var maxIndex = datasetsTitles.length;
+
+      // Original data var
+      var dataOrigin;
+
+      // Dataset 1,2,3,4,5,6,7,8,9,10
+      var dataYearList1,dataYearList2;
+
+      //Var for axis x and y
+      var xDomain, yDomain, xaxis, yaxis, x, y;
+
+      // Load csv with promise
+      d3.csv('https://raw.githubusercontent.com/pierreraimbaud/GlobalWarmingIsReal/master/ZonAnn.Ts%2BdSST.csv').then(function(data) {
+          dataOrigin = data;
+          console.log(dataOrigin);
+
+          //Create bar chart
+          createBar();
+      });
+
+      //button to swap over datasets
+      d3.select("button").on("click",function(){
+          updateBar();
+      });//end click function
+
       //Create bar chart
       function createBar(){
+        //Set dataset title
+        d3.select("h2").text("Dataset "+dataIndex + ": by year - " + datasetsTitles[dataIndex-1]);
+
+        //Data preparation (2 datasets)
+        prepareDatasets();        
+
+        //Create Axis
+        addAxisForBarChar();
+
+        //Create Bar chart (rect)
+        addBarCharRects();
+
       }
       //Add the axis for bar chart
       function addAxisForBarChar(){
+
+        // X scale definition
+        x = d3.scaleBand().rangeRound([0, iwidth])
+          .paddingInner(1)
+          .paddingOuter(1);
+
+        x.domain((eval("dataYearList"+dataIndex)).map(function(d){
+         return d.key*rangeOfYear;}));
+
+        // Y scale definition
+        y = d3.scaleLinear().rangeRound([iheight, 0]);
+        //y.domain([-0.7, 0.7]);
+        var min = d3.min(eval("dataYearList"+dataIndex), function(d){
+          return +d.value.promedian});
+        var max = d3.max(eval("dataYearList"+dataIndex), function(d){
+          return +d.value.promedian});
+        var dom = Math.max(Math.abs(min),max);
+        y.domain([-dom,dom]);
+
+        // Axis x
+        xaxis = g.append('g').attr('class', 'xaxis')
+            .call(d3.axisBottom(x))
+            .attr("transform", `translate(0,${iheight})`)
+            .attr("class", "xaxis");
+
+        // Axis y  
+        yaxis = g.append('g').attr('class', 'yaxis')
+            .call(d3.axisLeft(y));
       }
+
       //Add the rect (bar chart)
-      function addBarCharRects(){  
+      function addBarCharRects(){
+
+        // //Add rect
+        var rect = g.selectAll(".bar")
+          .data(eval("dataYearList"+dataIndex))
+          .enter().append("rect")
+          .attr("class", "bar");
+
+        //Add rect attributes
+        var attrX = rect.attr("x", function (d) {
+              return x(d.key*rangeOfYear);
+            })
+
+        var attrY = rect.attr("y", function (d) {
+              var fix =height -(margin.top+margin.bottom);
+              var plus = fix/2 - (fix - y(+d.value.promedian)*2)/2;
+              var moins= fix/2;
+              var val;
+              if (+d.value.promedian>=0){
+                val = plus;
+              }
+              else{
+                val=moins;
+              }
+              return val;
+            });
+
+        rect.attr("width", barwidth)
+            .attr("height", function (d) {
+              var fix =height -(margin.top+margin.bottom);
+              var plus = (fix - y(+d.value.promedian)*2)/2;
+              var moins= (fix - y(-(+d.value.promedian))*2)/2;
+              var val;
+              if (+d.value.promedian>=0){
+                val = plus;
+              }
+              else{
+                val=moins;
+              }
+              return val;
+            });
+
+        //Add rect mouse event
+        rect.on("mousemove", function(d){
+              tooltip
+                .style("left", d3.event.pageX - 70 + "px")
+                .style("top", d3.event.pageY - 90 + "px")
+                .style("display", "inline-block")
+                .html(d.key*5 + ": " +(d.value.promedian));
+            })
+            .on("mouseout", function(d){ tooltip.style("display", "none");});  
       }
+
       //Prepare datasets for bar chart
       function prepareDatasets(){
+
+        //Nest data for getting it as (key=year range, value.promedian=promedian of t of the years)
+        var dataYear1 = d3.nest()
+          .key(function(d){
+            return Math.trunc(+(d.Year)/rangeOfYear);
+          })
+          .rollup(function(d){
+            return {
+              promedian : d3.sum(d, function(g){
+                return (+g["Glob"])/d.length;
+              })
+            }
+          })
+          .entries(dataOrigin);
+          dataYearList1 = dataYear1;
+          console.log(dataYearList1);
+
+        //Nest data for getting it as (key=year range, value.promedian=promedian of t of the years)
+        var dataYear2 = d3.nest()
+          .key(function(d){
+            return Math.trunc(+(d.Year)/rangeOfYear);
+          })
+          .rollup(function(d){
+            return {
+              promedian : d3.sum(d, function(g){
+                return (+g["24N-90N"])/d.length;
+              })
+            }
+          })
+          .entries(dataOrigin);
+          dataYearList2 = dataYear2;
+
+        //Nest data for getting it as (key=year range, value.promedian=promedian of t of the years)
+        var dataYear3 = d3.nest()
+          .key(function(d){
+            return Math.trunc(+(d.Year)/rangeOfYear);
+          })
+          .rollup(function(d){
+            return {
+              promedian : d3.sum(d, function(g){
+                return (+g["24S-24N"])/d.length;
+              })
+            }
+          })
+          .entries(dataOrigin);
+          dataYearList3 = dataYear3;
+
+        //Nest data for getting it as (key=year range, value.promedian=promedian of t of the years)
+        var dataYear4 = d3.nest()
+          .key(function(d){
+            return Math.trunc(+(d.Year)/rangeOfYear);
+          })
+          .rollup(function(d){
+            return {
+              promedian : d3.sum(d, function(g){
+                return (+g["90S-24S"])/d.length;
+              })
+            }
+          })
+          .entries(dataOrigin);
+          dataYearList4 = dataYear4;
+
+        //Nest data for getting it as (key=year range, value.promedian=promedian of t of the years)
+        var dataYear5 = d3.nest()
+          .key(function(d){
+            return Math.trunc(+(d.Year)/rangeOfYear);
+          })
+          .rollup(function(d){
+            return {
+              promedian : d3.sum(d, function(g){
+                return (+g["64N-90N"])/d.length;
+              })
+            }
+          })
+          .entries(dataOrigin);
+          dataYearList5 = dataYear5;
+
+        //Nest data for getting it as (key=year range, value.promedian=promedian of t of the years)
+        var dataYear6 = d3.nest()
+          .key(function(d){
+            return Math.trunc(+(d.Year)/rangeOfYear);
+          })
+          .rollup(function(d){
+            return {
+              promedian : d3.sum(d, function(g){
+                return (+g["44N-64N"])/d.length;
+              })
+            }
+          })
+          .entries(dataOrigin);
+          dataYearList6 = dataYear6;
+
+        //Nest data for getting it as (key=year range, value.promedian=promedian of t of the years)
+        var dataYear7 = d3.nest()
+          .key(function(d){
+            return Math.trunc(+(d.Year)/rangeOfYear);
+          })
+          .rollup(function(d){
+            return {
+              promedian : d3.sum(d, function(g){
+                return (+g["24N-44N"])/d.length;
+              })
+            }
+          })
+          .entries(dataOrigin);
+          dataYearList7 = dataYear7;
+
+        //Nest data for getting it as (key=year range, value.promedian=promedian of t of the years)
+        var dataYear8 = d3.nest()
+          .key(function(d){
+            return Math.trunc(+(d.Year)/rangeOfYear);
+          })
+          .rollup(function(d){
+            return {
+              promedian : d3.sum(d, function(g){
+                return (+g["EQU-24N"])/d.length;
+              })
+            }
+          })
+          .entries(dataOrigin);
+          dataYearList8 = dataYear8;
+
+        //Nest data for getting it as (key=year range, value.promedian=promedian of t of the years)
+        var dataYear9 = d3.nest()
+          .key(function(d){
+            return Math.trunc(+(d.Year)/rangeOfYear);
+          })
+          .rollup(function(d){
+            return {
+              promedian : d3.sum(d, function(g){
+                return (+g["24S-EQU"])/d.length;
+              })
+            }
+          })
+          .entries(dataOrigin);
+          dataYearList9 = dataYear9;
+
+        //Nest data for getting it as (key=year range, value.promedian=promedian of t of the years)
+        var dataYear10 = d3.nest()
+          .key(function(d){
+            return Math.trunc(+(d.Year)/rangeOfYear);
+          })
+          .rollup(function(d){
+            return {
+              promedian : d3.sum(d, function(g){
+                return (+g["44S-24S"])/d.length;
+              })
+            }
+          })
+          .entries(dataOrigin);
+          dataYearList10 = dataYear10;
+
+        //Nest data for getting it as (key=year range, value.promedian=promedian of t of the years)
+        var dataYear11 = d3.nest()
+          .key(function(d){
+            return Math.trunc(+(d.Year)/rangeOfYear);
+          })
+          .rollup(function(d){
+            return {
+              promedian : d3.sum(d, function(g){
+                return (+g["64S-44S"])/d.length;
+              })
+            }
+          })
+          .entries(dataOrigin);
+          dataYearList11 = dataYear11;
+
+        //Nest data for getting it as (key=year range, value.promedian=promedian of t of the years)
+        var dataYear12 = d3.nest()
+          .key(function(d){
+            return Math.trunc(+(d.Year)/rangeOfYear);
+          })
+          .rollup(function(d){
+            return {
+              promedian : d3.sum(d, function(g){
+                return (+g["90S-64S"])/d.length;
+              })
+            }
+          })
+          .entries(dataOrigin);
+          dataYearList12 = dataYear12;
       }
+
       //Update datasets for bar chart
       function updateBar(){
+
+        //select new data
+          if (dataIndex==maxIndex){
+            dataIndex=1;  
+          }
+          else{
+            dataIndex++;
+          }
+
+          //Update x and y axis
+
+          //1 - rejoin data
+          xaxis = g.selectAll(".xaxis");
+          
+          //2 - Remove axis
+          xaxis.exit().remove();//remove unneeded axis
+
+            var yaxis = g.selectAll(".yaxis");
+          
+          xaxis.exit().remove();//remove unneeded axis
+
+          //3 - Update axis
+          xaxis.enter().append("xaxis")
+            .attr("class", "xaxis");
+
+           yaxis.enter().append("yaxis")
+            .attr("class", "yaxis");
+
+          // X scale
+          x = d3.scaleBand().rangeRound([0, iwidth])
+           .paddingInner(1)
+           .paddingOuter(1);
+          xDomain = (eval("dataYearList"+dataIndex)).map(function(d){return d.key*rangeOfYear; });
+          x.domain(xDomain);
+
+          // Y scale
+          y = d3.scaleLinear().rangeRound([iheight, 0]);
+          var min = d3.min(eval("dataYearList"+dataIndex), function(d){
+            return +d.value.promedian});
+          var max = d3.max(eval("dataYearList"+dataIndex), function(d){
+            return +d.value.promedian});
+          var dom = Math.max(Math.abs(min),max);
+          yDomain = [-dom,dom]
+          y.domain(yDomain);
+
+          // Axis x
+          xaxis =g.selectAll(".xaxis").data(xDomain);
+          xaxis.exit().remove();//remove unneeded rects
+          xaxis.enter().append("g");
+
+          xaxis.attr('class', 'xaxis').call(d3.axisBottom(x));
+          xaxis.attr("transform", `translate(0,${iheight})`)
+
+          // Axis y  
+          yaxis =g.selectAll(".yaxis").data(yDomain);
+          yaxis.exit().remove();//remove unneeded rects
+          yaxis.enter().append("g");
+
+          yaxis.attr('class', 'yaxis').call(d3.axisLeft(y));
+
+          //Update bar part(rect)
+
+          //1 - rejoin data
+          var rectss = g.selectAll(".bar")
+              .data(eval("dataYearList"+dataIndex));
+          
+          //2 - Remove bar (rect)
+          rectss.exit().remove();//remove unneeded rects
+         
+          //3 - Update bar (rect)
+          rectss.enter().append("rect")
+            .attr("class", "bar");
+
+
+          rectss.attr("x", function (d) {            
+              return x(d.key*rangeOfYear);
+            })
+
+          rectss.attr("y", function (d) {
+              var fix =height -(margin.top+margin.bottom);
+              var plus = fix/2 - (fix - y(+d.value.promedian)*2)/2;
+              var moins= fix/2;
+              var val;
+              if (+d.value.promedian>=0){
+                val = plus;
+              }
+              else{
+                val=moins;
+              }
+              return val;
+            });
+
+          rectss.attr("width", barwidth)
+            .attr("height", function (d) {
+              var fix =height -(margin.top+margin.bottom);
+              var plus = (fix - y(+d.value.promedian)*2)/2;
+              var moins= (fix - y(-(+d.value.promedian))*2)/2;
+              var val;
+              if (+d.value.promedian>=0){
+                val = plus;
+              }
+              else{
+                val=moins;
+              }
+              return val;
+            });//create any new rects needed
+
+          //Change text  
+          d3.select("h2").text("Dataset "+dataIndex + ": by year - " + datasetsTitles[dataIndex-1]);
       }
     </script>
 
