@@ -67,11 +67,11 @@
       text-align: center;
     }
     h2 {
-      font-size : 120%;
+      font-size : 110%;
       color:#489450;
     }
     h3 {
-      font-size : 180%;
+      font-size : 150%;
       color:#696969;
       text-align: center;
     }
@@ -93,11 +93,13 @@
     <div id="wrapper">
 
       <div id = "svgcontainer">
-            <br/>
             <h2>Dataset</h2>
-            <p id = "subTitleP" style="color:#789410;font-size:110%">Promedian temperature change (reference: promedian of the years 1950-1980) for each group of 5 years</p>
-            <button id = "swButton" style="padding: 10px 10px; text-align: center;font-size: 90%;margin: 4px 2px;">Switch dataset</button>
-            <button disabled id = "zoomButton" style="padding: 10px 10px; text-align: center;font-size: 90%;margin: 4px 2px;">Show dataset details</button>
+            <div>
+              <p id = "subTitleP" style="color:#789410;font-size:90%">Promedian temperature change (reference: promedian of the years 1950-1980) for each group of 5 years</p>
+              <button title="Explore over the planet" id = "swButton" style="padding: 5px 5px; text-align: center;font-size: 90%;margin: 2px 1px;">Switch dataset</button>
+              <button title="Show region subdivisions data" disabled id = "zoomButton" style="padding: 5px 5px; text-align: center;font-size: 90%;margin: 2px 1px;">Show dataset details</button>
+            </div>
+            <img src="pic_trulli.jpg" alt="Italian Trulli">
       </div>
 
        <div id = "explcontainer">
@@ -131,8 +133,8 @@
     <script>
       // Const margin data for viz
       const width = 900;
-      const height = 500;
-      const margin = {top: 5, right: 70, bottom: 50, left: 50};
+      const height = 450;
+      const margin = {top: 5, right: 30, bottom: 50, left: 20};
       const iwidth = width - margin.left -margin.right;
       const iheight = height - margin.top - margin.bottom;
       // Const bar chart
