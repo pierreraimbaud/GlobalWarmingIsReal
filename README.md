@@ -1,6 +1,12 @@
 # Global warming is a reality, all over the globe !
+
+### Author
+Pierre Raimbaud : https://github.com/pierreraimbaud, GitHub project link : https://github.com/pierreraimbaud/GlobalWarmingIsReal and Projet page : https://pierreraimbaud.github.io/GlobalWarmingIsReal/<br/>
+This project is under MIT license.
 <img src="/GlobalWarmingReality.png" alt="World division N-S">
 <img src="/World_map_With_Parallels.jpg" alt="World division N-S">
+<h2>Prerequisites, technologies</h2><br/>
+<p>The technologies used are d3 (javascript), HTML, CSS and git (nodejs for developing with a local server). There is no specific prerequisites for enjoying the visualization neither for using the code, available in github.</p>
             <p>Here, for the visualization by zones and subzones (detailed visualization), we used this division with the parallels 90, 64, 44, 24 North and South and the Equator.</p>
             <p>This picture is a modified version of <a href="https://upload.wikimedia.org/wikipedia/commons/0/0a/World_map_2004_CIA_large_2m.jpg">an original picture</a> which is published in public domain (author : Central Intelligence Agency).</p>
             <br/><br/>
@@ -8,7 +14,7 @@
               <p style="color:#111111;">
               This visualization uses data from data.giss.nasa.gov. The principal objective here is to show or discover some interesting insights about this data, knowing that the principal question asked was:<br/><b>Show that the global warming is a reality, all over the globe!</b>
               <br/><br/>
-              The other objetives are more academic: to use d3, to publish the web page on GithubPages etc. The technologies used are d3 (javascript), HTML, CSS and git (nodejs for developing with a local server). There is no specific prerequisites for enjoying the visualization neither for using the code, available in github.
+              The other objetives are more academic: to use d3, to publish the web page on GithubPages etc.
               <br/><br/>
               To be more precise about these insights, in the following paragraphs we will explain what were our data (through data abstraction), why this visualization (through task abstraction) and the reason of how we choice to present the data (idioms : visual encoding and interaction) ; thanks to that, we have been able to answer to the title question : is there the global warming a reality?
               <br/><br/>
