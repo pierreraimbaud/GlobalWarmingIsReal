@@ -4,8 +4,8 @@
 Pierre Raimbaud : https://github.com/pierreraimbaud, GitHub project link : https://github.com/pierreraimbaud/GlobalWarmingIsReal and Projet page : https://pierreraimbaud.github.io/GlobalWarmingIsReal/<br/><br/>
 This project is under MIT license.<br/><br/>
 <img src="/GlobalWarmingReality.png" alt="World division N-S">
-<img src="/World_map_With_Parallels.jpg" alt="World division N-S">
-<h2>Prerequisites, technologies</h2><br/>
+<img src="/World_map_With_Parallels.jpg" alt="World division N-S"><br/>
+<h2>Prerequisites, technologies</h2>
 <p>The technologies used are d3 (javascript), HTML, CSS and git (nodejs for developing with a local server). There is no specific prerequisites for enjoying the visualization neither for using the code, available in github.</p>
             <p>Here, for the visualization by zones and subzones (detailed visualization), we used this division with the parallels 90, 64, 44, 24 North and South and the Equator.</p>
             <p>This picture is a modified version of <a href="https://upload.wikimedia.org/wikipedia/commons/0/0a/World_map_2004_CIA_large_2m.jpg">an original picture</a> which is published in public domain (author : Central Intelligence Agency).</p>
