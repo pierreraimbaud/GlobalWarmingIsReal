@@ -35,24 +35,24 @@
     }
 
     /*Color for Equator dataset*/
-    .barbar--positive {
+    .bar2--positive {
       fill: #C5908E;
     }
-    .barbar--negative {
+    .bar2--negative {
       fill: #46C7C7;
     }
-    .barbar:hover {
+    .bar2:hover {
       fill: #347C17;
     }
 
     /*Color for South dataset*/
-    .barbarbar--positive {
+    .bar3--positive {
       fill: #E8ADAA;
     }
-    .barbarbar--negative {
+    .bar3--negative {
       fill: #79BAEC;
     }
-    .barbarbar:hover {
+    .bar3:hover {
       fill: #347C17;
     }
     
@@ -252,18 +252,18 @@
           .attr("class", function(d) { return "bar1 bar1--" + (d.value.promedian < 0 ? "negative" : "positive"); });
 
         // Add future rect (datasets for room)
-        var rect = g.selectAll(".barbar")
+        var rect = g.selectAll(".bar2")
           .data(dat)
           .enter().append("rect")
-          .attr("class", "barbar")
-          .attr("class", function(d) { return "barbar barbar--" + (d.value.promedian < 0 ? "negative" : "positive"); });
+          .attr("class", "bar2")
+          .attr("class", function(d) { return "bar2 bar2--" + (d.value.promedian < 0 ? "negative" : "positive"); });
 
         // Add future rect (datasets for room)
-        var rect = g.selectAll(".barbarbar")
+        var rect = g.selectAll(".bar3")
           .data(dat)
           .enter().append("rect")
-          .attr("class", "barbarbar")
-          .attr("class", function(d) { return "barbarbar barbarbar--" + (d.value.promedian < 0 ? "negative" : "positive"); });
+          .attr("class", "bar3")
+          .attr("class", function(d) { return "bar3 bar3--" + (d.value.promedian < 0 ? "negative" : "positive"); });
 
         // Add lonely rects
         var rect = g.selectAll(".bar")
@@ -628,39 +628,39 @@
           //Update multi bars part(rect) (for preparation or for quitting them)
 
           //1 - rejoin data
-          var barbar = g.selectAll(".bar1");
+          var bar2 = g.selectAll(".bar1");
           //2 - Remove bar (rect)
-          barbar.exit().remove();//remove unneeded rects
+          bar2.exit().remove();//remove unneeded rects
           //3 - Update bar (rect)
-          barbar.enter().append("rect")
+          bar2.enter().append("rect")
             .attr("class", "bar1");
-          barbar.attr("x", 0)
-          barbar.attr("y",0);
-          barbar.attr("width", 0)
+          bar2.attr("x", 0)
+          bar2.attr("y",0);
+          bar2.attr("width", 0)
             .attr("height", 0);//create any new rects needed
 
           //1 - rejoin data
-          var barbar = g.selectAll(".barbar");
+          var bar2 = g.selectAll(".bar2");
           //2 - Remove bar (rect)
-          barbar.exit().remove();//remove unneeded rects
+          bar2.exit().remove();//remove unneeded rects
           //3 - Update bar (rect)
-          barbar.enter().append("rect")
-            .attr("class", "barbar");
-          barbar.attr("x", 0)
-          barbar.attr("y",0);
-          barbar.attr("width", 0)
+          bar2.enter().append("rect")
+            .attr("class", "bar2");
+          bar2.attr("x", 0)
+          bar2.attr("y",0);
+          bar2.attr("width", 0)
             .attr("height", 0);//create any new rects needed
 
           //1 - rejoin data
-          var barbarbar = g.selectAll(".barbarbar");
+          var bar3 = g.selectAll(".bar3");
           //2 - Remove bar (rect)
-          barbarbar.exit().remove();//remove unneeded rects
+          bar3.exit().remove();//remove unneeded rects
           //3 - Update bar (rect)
-          barbarbar.enter().append("rect")
-            .attr("class", "barbarbar");
-          barbarbar.attr("x", 0)
-          barbarbar.attr("y",0);
-          barbarbar.attr("width", 0)
+          bar3.enter().append("rect")
+            .attr("class", "bar3");
+          bar3.attr("x", 0)
+          bar3.attr("y",0);
+          bar3.attr("width", 0)
             .attr("height", 0);//create any new rects needed
 
           //Change text  
@@ -817,12 +817,12 @@
           //Update multi bars part(rect) - (second bars)
 
           //1 - rejoin data
-          var rectss = g.selectAll(".barbar");
+          var rectss = g.selectAll(".bar2");
           //2 - Remove bar (rect)
           rectss.exit().remove();//remove unneeded rects
           //3 - Update bar (rect)
           rectss.data(eval("dataYearListDetail"+worldBand+"2")).enter().append("rect")
-            .attr("class", "barbar");
+            .attr("class", "bar2");
 
           rectss.attr("x", function (d) {            
               return x(d.key*rangeOfYear)+barwidth/8;
@@ -871,14 +871,14 @@
           //Update multi bars part(rect) - (third bars)
 
           //1 - rejoin data
-          var rectss = g.selectAll(".barbarbar");
+          var rectss = g.selectAll(".bar3");
           //2 - Remove bar (rect)
           rectss.exit().remove();//remove unneeded rects
           // We only want to put bars if dataset zoom is in for N or S
           if (worldBand !="EQ"){
             //3 - Update bar (rect)
             rectss.data(eval("dataYearListDetail"+worldBand+"3")).enter().append("rect")
-              .attr("class", "barbarbar");
+              .attr("class", "bar3");
 
             rectss.attr("x", function (d) {            
                 return x(d.key*rangeOfYear)+barwidth/4;
