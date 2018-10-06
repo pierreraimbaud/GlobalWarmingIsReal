@@ -1,8 +1,8 @@
 # Global warming is a reality, all over the globe !
 
 ### Author
-Pierre Raimbaud : https://github.com/pierreraimbaud, GitHub project link : https://github.com/pierreraimbaud/GlobalWarmingIsReal and Projet page : https://pierreraimbaud.github.io/GlobalWarmingIsReal/<br/>
-This project is under MIT license.
+Pierre Raimbaud : https://github.com/pierreraimbaud, GitHub project link : https://github.com/pierreraimbaud/GlobalWarmingIsReal and Projet page : https://pierreraimbaud.github.io/GlobalWarmingIsReal/<br/><br/>
+This project is under MIT license.<br/><br/>
 <img src="/GlobalWarmingReality.png" alt="World division N-S">
 <img src="/World_map_With_Parallels.jpg" alt="World division N-S">
 <h2>Prerequisites, technologies</h2><br/>
