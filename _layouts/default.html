@@ -283,28 +283,28 @@
           .data(dat)
           .enter().append("rect")
           .attr("class", "bar1")
-          .attr("class", function(d) { return "bar1 bar1--" + (d.value.promedian < 0 ? "negative" : "positive"); });
+          .attr("class", function(d) { return "bar1 bar1--" + (d.value.promedian > 0.0 ? "positive" : "negative"); });
 
         // Add future rect (datasets for room)
         var rect = g.selectAll(".bar2")
           .data(dat)
           .enter().append("rect")
           .attr("class", "bar2")
-          .attr("class", function(d) { return "bar2 bar2--" + (d.value.promedian < 0 ? "negative" : "positive"); });
+          .attr("class", function(d) { return "bar2 bar2--" + (d.value.promedian > 0.0 ? "positive" : "negative"); });
 
         // Add future rect (datasets for room)
         var rect = g.selectAll(".bar3")
           .data(dat)
           .enter().append("rect")
           .attr("class", "bar3")
-          .attr("class", function(d) { return "bar3 bar3--" + (d.value.promedian < 0 ? "negative" : "positive"); });
+          .attr("class", function(d) { return "bar3 bar3--" + (d.value.promedian > 0.0 ? "positive" : "negative"); });
 
         // Add lonely rects
         var rect = g.selectAll(".bar")
           .data(dat)
           .enter().append("rect")
           .attr("class", "bar")
-          .attr("class", function(d) { return "bar bar--" + (d.value.promedian < 0 ? "negative" : "positive"); });
+          .attr("class", function(d) { return "bar bar--" + (d.value.promedian > 0.0 ? "positive" : "negative"); });
 
         //Add lonely rects attributes
         var attrX = rect.attr("x", function (d) {
@@ -661,6 +661,8 @@
             }
             return val;
           })
+          .attr("class", function(d) { return "bar bar--" + (d.value.promedian > 0.0 ? "positive" : "negative"); });
+
          
           //Update multi bars part(rect) (for preparation or for quitting them)
 
@@ -840,6 +842,7 @@
               }
               return val;
             })
+            .attr("class", function(d) { return "bar1 bar1--" + (d.value.promedian > 0.0 ? "positive" : "negative"); });
 
           //Add rect mouse event
           rectss.on("mousemove", function(d){
@@ -894,6 +897,7 @@
               }
               return val;
             })
+            .attr("class", function(d) { return "bar2 bar2--" + (d.value.promedian > 0.0 ? "positive" : "negative"); });
 
           //Add rect mouse event
           rectss.on("mousemove", function(d){
@@ -949,7 +953,8 @@
                   val=moins;
                 }
                 return val;
-              });
+              })
+              .attr("class", function(d) { return "bar3 bar3--" + (d.value.promedian > 0.0 ? "positive" : "negative"); });
 
               //Add rect mouse event
               rectss.on("mousemove", function(d){
