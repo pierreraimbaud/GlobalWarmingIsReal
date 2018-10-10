@@ -13,46 +13,13 @@
 
     <style>
     /*Color for global dataset*/
-    .bar--positive {
+    .circle--positive {
       fill: #C48189;
     }
-    .bar--negative {
+    .circle--negative {
       fill: #CFECEC;
     }
-    .bar:hover {
-      fill: #347C17;
-    }
-
-    /*Color for North dataset*/
-    .bar1--positive {
-      fill: #7F4E52;
-    }
-    .bar1--negative {
-        fill: #3B9C9C;
-    }
-    .bar1:hover {
-      fill: #347C17;
-    }
-
-    /*Color for Equator dataset*/
-    .bar2--positive {
-      fill: #C5908E;
-    }
-    .bar2--negative {
-      fill: #46C7C7;
-    }
-    .bar2:hover {
-      fill: #347C17;
-    }
-
-    /*Color for South dataset*/
-    .bar3--positive {
-      fill: #E8ADAA;
-    }
-    .bar3--negative {
-      fill: #79BAEC;
-    }
-    .bar3:hover {
+    .circle:hover {
       fill: #347C17;
     }
     
@@ -115,15 +82,16 @@
               To be more precise about these insights, in the following paragraphs we will explain what were our data (through data abstraction), why this visualization (through task abstraction) and the reason of how we choice to present the data (idioms : visual encoding and interaction) ; thanks to that, we have been able to answer to the title question : is there the global warming a reality?
               <br/><br/>
               <p style="color:#789410;font-size:110%">What ?</p>
-              The dataset type is a <b>table</b>. The dataset availability is <b>static</b> because the dataset available on the website is not modified in real-time, so we just download the file from the website and load it on github. Maybe the data can evolve in the original website but here we will use a static data file, the one on github. Then to separate the dataset in smaller ones, and also to get <b>derived data</b> (promedian over 5 years), we process directly this file in the visualization with d3.<br/><br/>
+              The dataset type is <b>temporal</b> (initially, we could think that it is a table, but the fact is that almost all the dataset are tables, so we have to search for more precision: in our case,  the dataset is temporal because it provides temperature over time (year by year)). The dataset availability is <b>static</b> because the dataset available on the website is not modified in real-time, so we just download the file from the website and load it on github. Maybe the data can evolve in the original website but here we will use a static data file, the one on github. Then to separate the dataset in smaller ones, and also to get <b>derived data</b> (promedian over 5 years), we process directly this file in the visualization with d3.<br/><br/>
 
               Before processing the data in d3, the <b>items</b> represent each one a year, which have the same characteristics about temperature change (global change, change in the North, change in the South, change in the Equator, change in the North-Part1, change in the North-Part2, change in the North-Part3, change in the South-Part1, change in the South-Part2, change in the South-Part3). The years and these characteristics are the <b>attributes</b> (named just above).<br/><br/>
 
-              The attribute year is ordered and quantitative (temporal) and sequential (there is no separation between two groups so no diverging).
+              The attribute year is ordered and quantitative and sequential (there is no separation between two groups so no diverging).
               All the other attributes (there are all temperature changes, comparing to the promedian temperature of the years 1950-1980) are ordered and quantitative (because they are numbers) and diverging because there is a separation into two blocks of changes, the positive and the negative ones, which have different meanings each one.<br/><br/>
 
               After processing the data, we obtain new items : each item is a period of 5 years (quinquennium). The attributes remain quite the same ones : about the year (time period), it becomes a new time period: a quinquennium (a five-year period) with the same characteristics (ordered, quantitative, sequential), and about the different temperature changes it becomes the promedian of temperature change considering the 5 years, remaining with the same characteristics (ordered, quantitative, diverging).<br/><br/>
               <p style="color:#789410;font-size:110%">Why ?</p>
+              Before talking about the wanted tasks, we have to mention that we did one derivation task : process the data, transform the items which represented one year into a group of 5 years (and as result, temperature change are now a promedian of the change of the 5 years) so the task, in terms of Tamara was <b>Derive (action) Feature (target)</b>.<br/><br/>
 
               Which tasks do we want to perform here ? <br/><br/>
 
@@ -136,24 +104,26 @@
               <br/><br/>
               <b>This is our second insight : the global warming is a reality on all the parts of the planet (North, Equator, South).</b>
               <br/><br/>
+              One secondary task asked was to show that the global warming is a reality on all continents. Here we would consider that we had a talk with the boss, explaining that with these data, we could not perform this task because there are no data by country o by continent, just with the parallels. That why we show at least the fact that in each zone (North, South, Equator) the global warming is a reality.
+              <br/><br/>
 
-              One secondary task here, not required/asked here but meaningful, is to know better about the global warming depending on the zones of the world. We want to know where the global warming has been more important, and where not. In terms of Tamara, at a high-level, this task is <b>Discover (action) Features (target)</b> and at a low-level that the action is <b>Compare</b> and the target is <b>Features</b>. We can perform this task by using the interaction "Switch dataset" and then compare on the y axis the highest level of the scale : just by switching, we can observe than in the North the highest level is about 1.2, whereas in the Equator it is about 0.8 and in the South it is about 0.4, so we have been able to compare this feature (the maximum positive temperature change on each zone), knowing already (from task 1) that all the three have a trend of increase in the last decades.
+              Another secondary task here, not required/asked here but meaningful, is to know better about the global warming depending on the zones of the world. We want to know where the global warming has been more important, and where not. In terms of Tamara, at a high-level, this task is <b>Discover (action) Features (target)</b> and at a low-level that the action is <b>Compare</b> and the target is <b>Features</b>. We can perform this task by using the interaction "Switch dataset" and then compare on the y axis the highest level of the scale : just by switching, we can observe than in the North the highest level is about 1.2, whereas in the Equator it is about 0.8 and in the South it is about 0.4, so we have been able to compare this feature (the maximum positive temperature change on each zone), knowing already (from task 1) that all the three have a trend of increase in the last decades.
               <br/><br/>
               As a result, <b>our third insight : the global warming, present everywhere on Earth, is even more important in the North of the planet (more than in Equator, where it is more important than in the South).</b>
               <br/><br/>
-              Another secondary task here, not required/asked here but meaningful, is to search more precisely for each zone, if there are differences between subzones of this one about the global warming. The aim is to be able to determine if the global warming has been more important in some subzones, or not. In terms of Tamara, at a high-level, this task is <b>Discover (action) Features (target)</b> and at a low-level that the action is <b>Compare</b> and the target is <b>Features</b>. We can perform this task by using the interaction "Show dataset details" (<b>details on demand</b>): by clicking you can observe in the same visualization the temperature changes for 2 or 3 subzones of the current one.
+              And another secondary task here, not required/asked here but meaningful, is to search more precisely for each zone, if there are differences between subzones of this one about the global warming. The aim is to be able to determine if the global warming has been more important in some subzones, or not. In terms of Tamara, at a high-level, this task is <b>Discover (action) Features (target)</b> and at a low-level that the action is <b>Compare</b> and the target is <b>Features</b>. We can perform this task by using the interaction "Show dataset details" (<b>details on demand</b>): by clicking you can observe in the same visualization the temperature changes for 2 or 3 subzones of the current one.
               <br/><br/>
               As a result, <b>our fourth insight : the global warming, present everywhere on Earth, is even more important in the North of the North of the planet : the North Pole. It is a confirmation of something that the media are also telling. But more surprisingly, in the South of the planet, in the South Pole (the South of the South of the planet), the global warming is not more important (it is less important!) than in the northern parts of the South.</b>
               <br/><br/>
 
               <p style="color:#789410;font-size:110%">How ?</p>
 
-              We choose <b>bar charts</b> for this visualization.<br/><br/>
+              We choose <b>line charts</b> for this visualization.<br/><br/>
               First, we have to say that for all the datasets, in the x axis, we have the quinquennium attribute which is ordered, quantitative, sequential and in the y axis we have the promedian temperature change attribute (sometimes 2 or 3 times), so ordered, quantitative, diverging.<br/><br/>
-              As a result, about the visual encoding, the <b>mark</b> we choose is <b>line</b> and the <b>channel</b> is <b>vertical position</b> (which give a bar chart) ; it can be easily explain because this channel is the most <b>effective</b> for the ordered attributes (which should always use magnitude channels, in theory, so from this point of view, we use a good and expressive type).</p></br>
-              Note that we also use, to strengthen the difference between positive and negative values (diverging) of the temperature changes attributes, color hue, for discriminating them better, but with vertical position it was sufficient.</br>
-              We choose to <b>order and align</b> the marks in our representation because it combines well with ordered attributes and with our task (identify trends, identify features, compare features).<br/><br/>
-              Then about the interaction, we decide to provide to the user two interactions with two buttons. The first one (switch) is for switching between the dataset, so it’s a <b>Change manipulation</b> : it is usefull for our primary task (show that in the whole world the global warming is a reality) and for a secondary task (compare the global warming between the 3 zones). The second one (show details) is for showing the detail about temperature changes in 2 or 3 subzones of the current zone of the planet : it is usefull for a secondary task (compare subzones in order to see if the global warming has been more important in some subzones). It’s a <b>Superimpose!</b> And, we provide also a <b>“Select” manipulation</b>, with a mouseover which give more detailed information about the current item.</p>
+              As a result, about the visual encoding, the <b>mark</b> we choose is <b>line</b> which represent the temperature change (comparing the temperature to a promedian from the period 1950-1980) and the <b>channel</b> is <b>vertical position</b> because the attribute temperature change is ordered quantitative; it can be easily explain because this channel is the most <b>effective</b> for the ordered attributes (which should always use magnitude channels, in theory, so from this point of view, we use a good and expressive type).</p>
+              Note that we also use, to strengthen the difference between positive and negative values (diverging) of the temperature changes attributes, color hue, for discriminating them better, but with vertical position it was sufficient. And about the view for secondary task where we have multi lines, we use color hue in order to separate each subzone (because at the end, zone is categorical so with color hue we respect the principle of expressiveness and also the one of effectiveness because it is the second "best" channel for categorical attribute).</br>
+              As in y axis we have the temperature change which is quantitative ordered, we choose to <b>express</b> the vertical position - it combines well with ordered attributes and with our task (identify trends, identify features, compare features). And as in x axis we have the quinquennium which is quantitative ordered, we choose to <b>express</b> also the position. <br/><br/>
+              Then about the interaction, we decide to provide to the user two interactions with two buttons. The first one (switch) is for switching between the dataset, so it’s a <b>Change manipulation</b> : it is usefull for our primary task (show that in the whole world the global warming is a reality) and for a secondary task (compare the global warming between the 3 global zones). The second one (show details) is for showing the detail about temperature changes in 2 or 3 subzones of the current zone of the planet : it is usefull for a secondary task (compare subzones in order to see if the global warming has been more important in some subzones). It’s a <b>Superimpose!</b> And, we provide also a <b>“Select” manipulation</b>, with a mouseover which give more detailed information about the current item or subzone.</p>
               </p>
       </div>
 
@@ -278,80 +248,72 @@
       function addBarCharRects(){
         var dat = eval("dataYearList"+dataIndex);
 
-        // Add future rect (datasets for room)
-        var rect = g.selectAll(".bar1")
-          .data(dat)
-          .enter().append("rect")
-          .attr("class", "bar1")
-          .attr("class", function(d) { return "bar1 bar1--" + (d.value.promedian > 0.0 ? "positive" : "negative"); });
+        // Add the line which join the points
+        const line1 = d3.line()
+          .x( d=> 0)
+          .y( d=> 0);
+          
+        // Path element
+        g.append("path")
+          .attr("class", "line1")
+          .attr("d", line1(dat))
+          .style("stroke", "grey")
+          .style("fill", "none");
 
-        // Add future rect (datasets for room)
-        var rect = g.selectAll(".bar2")
-          .data(dat)
-          .enter().append("rect")
-          .attr("class", "bar2")
-          .attr("class", function(d) { return "bar2 bar2--" + (d.value.promedian > 0.0 ? "positive" : "negative"); });
+          // Add the line which join the points
+          const line = d3.line()
+            .x( d=> x(d.key*rangeOfYear))
+            .y( d=> (height -(margin.top+margin.bottom))/2 - ((height -(margin.top+margin.bottom)) - y(+d.value.promedian)*2)/2);
+          
+          // Path element
+          g.append("path")
+            .attr("class", "line")
+            .attr("d", line(dat))
+            .style("stroke", "grey")
+            .style("fill", "none");
 
-        // Add future rect (datasets for room)
-        var rect = g.selectAll(".bar3")
-          .data(dat)
-          .enter().append("rect")
-          .attr("class", "bar3")
-          .attr("class", function(d) { return "bar3 bar3--" + (d.value.promedian > 0.0 ? "positive" : "negative"); });
+          var circ = svg.selectAll('circle')
+            .data(dat)
+            .enter()
+            .append('circle')
+            .attr("class", function(d) { return "circle circle--" + (d.value.promedian > 0.0 ? "positive" : "negative"); })
 
-        // Add lonely rects
-        var rect = g.selectAll(".bar")
-          .data(dat)
-          .enter().append("rect")
-          .attr("class", "bar")
-          .attr("class", function(d) { return "bar bar--" + (d.value.promedian > 0.0 ? "positive" : "negative"); });
-
-        //Add lonely rects attributes
-        var attrX = rect.attr("x", function (d) {
-              // The keys will be the year divided by the range of year, in order to group by X years, so then multiply
-              return x(d.key*rangeOfYear); 
-            });
-
-        var attrY = rect.attr("y", function (d) {
-              var fix =height -(margin.top+margin.bottom);
-              // Depending if the value is negative o positive, the y attribute comes from a different calculation
-              var plus = fix/2 - (fix - y(+d.value.promedian)*2)/2;
-              var moins= fix/2;
-              var val;
-              if (+d.value.promedian>=0){
-                val = plus;
-              }
-              else{
-                val=moins;
-              }
-              return val;
-            });
-
-        rect.attr("width", barwidth)
-            .attr("height", function (d) {
-              var fix =height -(margin.top+margin.bottom);
-              // Depending if the value is negative o positive, the height attribute comes from a different calculation
-              var plus = (fix - y(+d.value.promedian)*2)/2;
-              var moins= (fix - y(-(+d.value.promedian))*2)/2;
-              var val;
-              if (+d.value.promedian>=0){
-                val = plus;
-              }
-              else{
-                val=moins;
-              }
-              return val;
-            });
-
-        //Add rect mouse event
-        rect.on("mousemove", function(d){
+          var attrX = 
+            circ.attr("r", 5)
+                .attr("cx", function(d) { return x(d.key*rangeOfYear)+margin.left; })
+                .attr("cy", function(d) { return (height -(margin.top+margin.bottom))/2 - ((height -(margin.top+margin.bottom)) - y(+d.value.promedian)*2)/2+margin.top; })
+            
+          //Add rect mouse event
+          circ.on("mousemove", function(d){
               tooltip
                 .style("left", d3.event.pageX - 70 + "px")
                 .style("top", d3.event.pageY - 90 + "px")
                 .style("display", "inline-block")
                 .html(d.key == (2015/rangeOfYear) ? (d.key*rangeOfYear+"-2017"+": " +(d.value.promedian)+ "°C") : (d.key*rangeOfYear+"-"+(d.key*rangeOfYear+rangeOfYear))+": " +(d.value.promedian)+ "°C");
             })
-            .on("mouseout", function(d){ tooltip.style("display", "none");});  
+            .on("mouseout", function(d){ tooltip.style("display", "none");});
+
+          const line2 = d3.line()
+            .x( d=> 0)
+            .y( d=> 0);
+          
+          // Path element
+          g.append("path")
+            .attr("class", "line2")
+            .attr("d", line2(dat))
+            .style("stroke", "grey")
+            .style("fill", "none");
+
+          const line3 = d3.line()
+            .x( d=> 0)
+            .y( d=> 0);
+          
+          // Path element
+          g.append("path")
+            .attr("class", "line3")
+            .attr("d", line3(dat))
+            .style("stroke", "grey")
+            .style("fill", "none");
       }
 
       //Prepare datasets for bar chart
@@ -602,7 +564,7 @@
 
         // Axis x
         xaxis =g.selectAll(".xaxis").data(xDomain);
-        xaxis.exit().remove();//remove unneeded rects
+        xaxis.exit().remove();//remove unneeded axis
         xaxis.enter().append("g");
 
         xaxis.attr('class', 'xaxis').call(d3.axisBottom(x));
@@ -610,100 +572,107 @@
 
         // Axis y  
         yaxis =g.selectAll(".yaxis").data(yDomain);
-        yaxis.exit().remove();//remove unneeded rects
+        yaxis.exit().remove();//remove unneeded axis
         yaxis.enter().append("g");
 
         yaxis.attr('class', 'yaxis').call(d3.axisLeft(y));
 
-        //Update bar part(rect)
+        //Update line
+        //1 - rejoin data
+        var line = g.selectAll(".line");        
+        //2 - Remove line
+        line.exit().remove();//remove unneeded lines
+        //3 - Update line
+        line.enter().append("path")
+          .attr("class", "line");
+
+        // Add the line which join the points
+        const linef = d3.line()
+          .x( d=> x(d.key*rangeOfYear))
+          .y( d=> (height -(margin.top+margin.bottom))/2 - ((height -(margin.top+margin.bottom)) - y(+d.value.promedian)*2)/2);
+          
+        // Path element
+        line.attr("d", linef(eval("dataYearList"+dataIndex)));
+        line.style("stroke", "grey");
+        line.style("fill", "none");
+
+        //Update points
+        //1 - rejoin data
+        var dots = svg.selectAll('circle').data(eval("dataYearList"+dataIndex));
+        //2 - Remove points
+        dots.exit().remove();//remove unneeded points
+        //3 - Update points
+        dots.enter().append("circle");
+
+        dots.attr("r", 5);
+
+        dots.attr("cx", function(d) { return x(d.key*rangeOfYear)+margin.left; });
+        dots.attr("cy", function(d) { return (height -(margin.top+margin.bottom))/2 - ((height -(margin.top+margin.bottom)) - y(+d.value.promedian)*2)/2+margin.top; });
+        //Add rect mouse event
+        dots.on("mousemove", function(d){
+              tooltip
+                .style("left", d3.event.pageX - 70 + "px")
+                .style("top", d3.event.pageY - 90 + "px")
+                .style("display", "inline-block")
+                .html(d.key == (2015/rangeOfYear) ? (d.key*rangeOfYear+"-2017"+": " +(d.value.promedian)+ "°C") : (d.key*rangeOfYear+"-"+(d.key*rangeOfYear+rangeOfYear))+": " +(d.value.promedian)+ "°C");
+            })
+            .on("mouseout", function(d){ tooltip.style("display", "none");})
+            .attr("class", function(d) { return "circle circle--" + (d.value.promedian > 0.0 ? "positive" : "negative"); });
+
+        //Update multi lines part (for preparation or for quitting them)
+        //1 - rejoin data
+        var line1 = g.selectAll(".line1");        
+        //2 - Remove lines
+        line1.exit().remove();//remove unneeded lines
+        //3 - Update lines
+        line1.enter().append("path")
+          .attr("class", "line1");
+        // Add the line which join the points
+        const linef1 = d3.line()
+          .x( d=> 0)
+          .y( d=> 0);
+          
+        // Path element
+        line1.attr("d", linef1(eval("dataYearList"+dataIndex)));
+        line1.style("stroke", "grey");
+        line1.style("fill", "none");
 
         //1 - rejoin data
-        var rectss = g.selectAll(".bar")
-            .data(eval("dataYearList"+dataIndex));
+        var line2 = g.selectAll(".line2");        
+        //2 - Remove lines
+        line2.exit().remove();//remove unneeded lines
+        //3 - Update lines
+        line2.enter().append("path").attr("class", "line2");
+
+        // Add the line which join the points
+        const linef2 = d3.line()
+          .x( d=> 0)
+          .y( d=> 0);
         
-        //2 - Remove bar (rect)
-        rectss.exit().remove();//remove unneeded rects
-       
-        //3 - Update bar (rect)
-        rectss.enter().append("rect")
-          .attr("class", "bar");
+        // Path element
+        line2.attr("d", linef2(eval("dataYearList"+dataIndex)));
+        line2.style("stroke", "grey");
+        line2.style("fill", "none");
 
-        // Same calculations than in addBarCharRects
-        rectss.attr("x", function (d) {            
-            return x(d.key*rangeOfYear);
-          })
+        //1 - rejoin data
+        var line3 = g.selectAll(".line3");        
+        //2 - Remove lines
+        line3.exit().remove();//remove unneeded lines
+        //3 - Update lines
+        line3.enter().append("path").attr("class", "line3");
 
-        rectss.attr("y", function (d) {
-            var fix =height -(margin.top+margin.bottom);
-            var plus = fix/2 - (fix - y(+d.value.promedian)*2)/2;
-            var moins= fix/2;
-            var val;
-            if (+d.value.promedian>=0){
-              val = plus;
-            }
-            else{
-              val=moins;
-            }
-            return val;
-          });
+        // Add the line which join the points
+        const linef3 = d3.line()
+          .x( d=> 0)
+          .y( d=> 0);
+          
+        // Path element
+        line3.attr("d", linef3(eval("dataYearList"+dataIndex)));
+        line3.style("stroke", "grey");
+        line3.style("fill", "none");
 
-        rectss.attr("width", barwidth)
-          .attr("height", function (d) {
-            var fix =height -(margin.top+margin.bottom);
-            var plus = (fix - y(+d.value.promedian)*2)/2;
-            var moins= (fix - y(-(+d.value.promedian))*2)/2;
-            var val;
-            if (+d.value.promedian>=0){
-              val = plus;
-            }
-            else{
-              val=moins;
-            }
-            return val;
-          })
-          .attr("class", function(d) { return "bar bar--" + (d.value.promedian > 0.0 ? "positive" : "negative"); });
-
-         
-          //Update multi bars part(rect) (for preparation or for quitting them)
-
-          //1 - rejoin data
-          var bar2 = g.selectAll(".bar1");
-          //2 - Remove bar (rect)
-          bar2.exit().remove();//remove unneeded rects
-          //3 - Update bar (rect)
-          bar2.enter().append("rect")
-            .attr("class", "bar1");
-          bar2.attr("x", 0)
-          bar2.attr("y",0);
-          bar2.attr("width", 0)
-            .attr("height", 0);//create any new rects needed
-
-          //1 - rejoin data
-          var bar2 = g.selectAll(".bar2");
-          //2 - Remove bar (rect)
-          bar2.exit().remove();//remove unneeded rects
-          //3 - Update bar (rect)
-          bar2.enter().append("rect")
-            .attr("class", "bar2");
-          bar2.attr("x", 0)
-          bar2.attr("y",0);
-          bar2.attr("width", 0)
-            .attr("height", 0);//create any new rects needed
-
-          //1 - rejoin data
-          var bar3 = g.selectAll(".bar3");
-          //2 - Remove bar (rect)
-          bar3.exit().remove();//remove unneeded rects
-          //3 - Update bar (rect)
-          bar3.enter().append("rect")
-            .attr("class", "bar3");
-          bar3.attr("x", 0)
-          bar3.attr("y",0);
-          bar3.attr("width", 0)
-            .attr("height", 0);//create any new rects needed
-
-          //Change text  
-          d3.select("h2").text("Temperature change in °C from 1880 to now - Earth zone: " + datasetsTitles[dataIndex-1]);
+        //Change text  
+        d3.select("h2").text("Temperature change in °C from 1880 to now - Earth zone: " + datasetsTitles[dataIndex-1]);
       }
 
       //Update the bar chart in multi bar chart based on the dataset change (zoom)
@@ -782,191 +751,124 @@
 
           yaxis.attr('class', 'yaxis').call(d3.axisLeft(y));
 
-          //Update bar part(rect) - to remove them
-
+          //Update lines- to remove them
           //1 - rejoin data
-          var rectss = g.selectAll(".bar");
-          //2 - Remove bar (rect)
-          rectss.exit().remove();//remove unneeded rects
-          //3 - Update bar (rect)
-          rectss.enter().append("rect")
-            .attr("class", "bar");
+          var line = g.selectAll(".line");          
+          //2 - Remove lines
+          line.exit().remove();//remove unneeded lines
+          //3 - Update lines
+          line.enter().append("path")
+            .attr("class", "line");
 
-          rectss.attr("x", 0)
-
-          rectss.attr("y",0);
-
-          rectss.attr("width", 0)
-            .attr("height", 0);//create any new rects needed
-
+          // Add the line which join the points
+          const linef = d3.line()
+            .x( d=> 0)
+            .y( d=> 0);
           
-          //Update multi bars part(rect) - (first bars)
+          // Path element
+          line.attr("d", linef(eval("dataYearList"+dataIndex)));
+          line.style("stroke", "grey");
+          line.style("fill", "none");
 
           //1 - rejoin data
-          var rectss = g.selectAll(".bar1");
+          var dots = svg.selectAll('circle').data(eval("dataYearList"+dataIndex));
+          //2 - Remove points
+          dots.exit().remove();//remove unneeded points
+          //3 - Update points
+          dots.enter().append("circle");
+          dots.attr("r", 0);
+          dots.attr("cx",0);
+          dots.attr("cy", 0);//create any new rects points
+
+          //Update multi lines part - (first line)
+
+          //1 - rejoin data
+          var line1 = g.selectAll(".line1");
+        
           //2 - Remove bar (rect)
-          rectss.exit().remove();//remove unneeded rects
+          line1.exit().remove();//remove unneeded rects
+       
           //3 - Update bar (rect)
-          rectss.data(eval("dataYearListDetail"+worldBand+"1")).enter().append("rect")
-            .attr("class", "bar1");
+          line1.data(eval("dataYearListDetail"+worldBand+"1")).append("path").attr("class", "line1");
 
-          rectss.attr("x", function (d) {            
-              return x(d.key*rangeOfYear);
+          // Add the line which join the points
+          const linef1 = d3.line()
+            .x( d=> x(d.key*rangeOfYear))
+            .y( d=> (height -(margin.top+margin.bottom))/2 - ((height -(margin.top+margin.bottom)) - y(+d.value.promedian)*2)/2);
+          
+          // Path element
+          line1.attr("d", linef1(eval("dataYearListDetail"+worldBand+"1")));
+          line1.style("stroke", "800080");
+          line1.style("fill", "none");
+          line1.attr("stroke-width", 2.5);
+          line1.on("mousemove", function(d){
+              tooltip
+                .style("left", d3.event.pageX - 70 + "px")
+                .style("top", d3.event.pageY - 90 + "px")
+                .style("display", "inline-block")
+                .html("Zone: " +getDTitle(worldBand, 0));
             })
-
-          rectss.attr("y", function (d) {
-              var fix =height -(margin.top+margin.bottom);
-              var plus = fix/2 - (fix - y(+d.value.promedian)*2)/2;
-              var moins= fix/2;
-              var val;
-              if (+d.value.promedian>=0){
-                val = plus;
-              }
-              else{
-                val=moins;
-              }
-              return val;
-            });
-
-          rectss.attr("width", barwidth)
-            .attr("height", function (d) {
-              var fix =height -(margin.top+margin.bottom);
-              var plus = (fix - y(+d.value.promedian)*2)/2;
-              var moins= (fix - y(-(+d.value.promedian))*2)/2;
-              var val;
-              if (+d.value.promedian>=0){
-                val = plus;
-              }
-              else{
-                val=moins;
-              }
-              return val;
-            })
-            .attr("class", function(d) { return "bar1 bar1--" + (d.value.promedian > 0.0 ? "positive" : "negative"); });
-
-          //Add rect mouse event
-          rectss.on("mousemove", function(d){
-                tooltip
-                  .style("left", d3.event.pageX - 70 + "px")
-                  .style("top", d3.event.pageY - 90 + "px")
-                  .style("display", "inline-block")
-                  .html(d.key == (2015/rangeOfYear) ? (getDTitle(worldBand, 0)+ " zone, in "+d.key*rangeOfYear+"-2017"+": " +(d.value.promedian)+ "°C") : (getDTitle(worldBand, 0)+ " zone, in "+ d.key*rangeOfYear+"-"+(d.key*rangeOfYear+rangeOfYear))+": " +(d.value.promedian)+ "°C");
-              })
-              .on("mouseout", function(d){ tooltip.style("display", "none");});
-
-
-          //Update multi bars part(rect) - (second bars)
+            .on("mouseout", function(d){ tooltip.style("display", "none");})
+          
+          //Update multi lines part - (second line)
 
           //1 - rejoin data
-          var rectss = g.selectAll(".bar2");
-          //2 - Remove bar (rect)
-          rectss.exit().remove();//remove unneeded rects
-          //3 - Update bar (rect)
-          rectss.data(eval("dataYearListDetail"+worldBand+"2")).enter().append("rect")
-            .attr("class", "bar2");
+          var line2 = g.selectAll(".line2");        
+          //2 - Remove line
+          line2.exit().remove();//remove unneeded line
+       
+          //3 - Update line
+          line2.data(eval("dataYearListDetail"+worldBand+"2")).append("path").attr("class", "line2");
 
-          rectss.attr("x", function (d) {            
-              return x(d.key*rangeOfYear)+barwidth/8;
+          // Add the line which join the points
+          const linef2 = d3.line()
+            .x( d=> x(d.key*rangeOfYear))
+            .y( d=> (height -(margin.top+margin.bottom))/2 - ((height -(margin.top+margin.bottom)) - y(+d.value.promedian)*2)/2);
+          
+          // Path element
+          line2.attr("d", linef2(eval("dataYearListDetail"+worldBand+"2")));
+          line2.style("stroke", "ff6600");
+          line2.style("fill", "none");
+          line2.attr("stroke-width", 2.5);
+          line2.on("mousemove", function(d){
+              tooltip
+                .style("left", d3.event.pageX - 70 + "px")
+                .style("top", d3.event.pageY - 90 + "px")
+                .style("display", "inline-block")
+                .html("Zone: " +getDTitle(worldBand, 1));
             })
+            .on("mouseout", function(d){ tooltip.style("display", "none");});
 
-          rectss.attr("y", function (d) {
-              var fix =height -(margin.top+margin.bottom);
-              var plus = fix/2 - (fix - y(+d.value.promedian)*2)/2;
-              var moins= fix/2;
-              var val;
-              if (+d.value.promedian>=0){
-                val = plus;
-              }
-              else{
-                val=moins;
-              }
-              return val;
-            });
-
-          rectss.attr("width", barwidth/1.3)
-            .attr("height", function (d) {
-              var fix =height -(margin.top+margin.bottom);
-              var plus = (fix - y(+d.value.promedian)*2)/2;
-              var moins= (fix - y(-(+d.value.promedian))*2)/2;
-              var val;
-              if (+d.value.promedian>=0){
-                val = plus;
-              }
-              else{
-                val=moins;
-              }
-              return val;
-            })
-            .attr("class", function(d) { return "bar2 bar2--" + (d.value.promedian > 0.0 ? "positive" : "negative"); });
-
-          //Add rect mouse event
-          rectss.on("mousemove", function(d){
-                tooltip
-                  .style("left", d3.event.pageX - 70 + "px")
-                  .style("top", d3.event.pageY - 90 + "px")
-                  .style("display", "inline-block")
-                  .html(d.key == (2015/rangeOfYear) ? (getDTitle(worldBand, 1)+ " zone, in "+d.key*rangeOfYear+"-2017"+": " +(d.value.promedian)+ "°C") : (getDTitle(worldBand, 1)+ " zone, in "+ d.key*rangeOfYear+"-"+(d.key*rangeOfYear+rangeOfYear))+": " +(d.value.promedian)+ "°C");
-              })
-              .on("mouseout", function(d){ tooltip.style("display", "none");});
-
-
-          //Update multi bars part(rect) - (third bars)
-
-          //1 - rejoin data
-          var rectss = g.selectAll(".bar3");
-          //2 - Remove bar (rect)
-          rectss.exit().remove();//remove unneeded rects
-          // We only want to put bars if dataset zoom is in for N or S
+          //Update multi lines part - (third line)
           if (worldBand !="EQ"){
+            //1 - rejoin data
+            var line3 = g.selectAll(".line3");        
+            //2 - Remove bar (rect)
+            line3.exit().remove();//remove unneeded rects
+           
             //3 - Update bar (rect)
-            rectss.data(eval("dataYearListDetail"+worldBand+"3")).enter().append("rect")
-              .attr("class", "bar3");
+            line3.data(eval("dataYearListDetail"+worldBand+"3")).append("path").attr("class", "line3");
 
-            rectss.attr("x", function (d) {            
-                return x(d.key*rangeOfYear)+barwidth/4;
-            })
-
-            rectss.attr("y", function (d) {
-                var fix =height -(margin.top+margin.bottom);
-                var plus = fix/2 - (fix - y(+d.value.promedian)*2)/2;
-                var moins= fix/2;
-                var val;
-                if (+d.value.promedian>=0){
-                  val = plus;
-                }
-                else{
-                  val=moins;
-                }
-                return val;
-              });
-
-            rectss.attr("width", barwidth/2)
-              .attr("height", function (d) {
-                var fix =height -(margin.top+margin.bottom);
-                var plus = (fix - y(+d.value.promedian)*2)/2;
-                var moins= (fix - y(-(+d.value.promedian))*2)/2;
-                var val;
-                if (+d.value.promedian>=0){
-                  val = plus;
-                }
-                else{
-                  val=moins;
-                }
-                return val;
+            // Add the line which join the points
+            const linef3 = d3.line()
+              .x( d=> x(d.key*rangeOfYear))
+              .y( d=> (height -(margin.top+margin.bottom))/2 - ((height -(margin.top+margin.bottom)) - y(+d.value.promedian)*2)/2);
+            
+            // Path element
+            line3.attr("d", linef3(eval("dataYearListDetail"+worldBand+"3")));
+            line3.style("stroke", "408000");
+            line3.style("fill", "none");
+            line3.attr("stroke-width", 2.5);
+            line3.on("mousemove", function(d){
+              tooltip
+                .style("left", d3.event.pageX - 70 + "px")
+                .style("top", d3.event.pageY - 90 + "px")
+                .style("display", "inline-block")
+                .html("Zone: " +getDTitle(worldBand, 2));
               })
-              .attr("class", function(d) { return "bar3 bar3--" + (d.value.promedian > 0.0 ? "positive" : "negative"); });
-
-              //Add rect mouse event
-              rectss.on("mousemove", function(d){
-                    tooltip
-                      .style("left", d3.event.pageX - 70 + "px")
-                      .style("top", d3.event.pageY - 90 + "px")
-                      .style("display", "inline-block")
-                      .html(d.key == (2015/rangeOfYear) ? (getDTitle(worldBand, 2)+ " zone, in "+d.key*rangeOfYear+"-2017"+": " +(d.value.promedian)+ "°C") : (getDTitle(worldBand, 2)+ " zone, in "+ d.key*rangeOfYear+"-"+(d.key*rangeOfYear+rangeOfYear))+": " +(d.value.promedian)+ "°C");
-                  })
-                  .on("mouseout", function(d){ tooltip.style("display", "none");});
-              }
-          }
+              .on("mouseout", function(d){ tooltip.style("display", "none");});
+         }
+        }
       }
     </script>
 
